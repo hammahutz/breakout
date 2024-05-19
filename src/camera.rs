@@ -19,5 +19,4 @@ fn spawn_camera(mut commands: Commands) {
         },
         GameCamera,
     ));
-    print!("Hello World! :D");
 }
