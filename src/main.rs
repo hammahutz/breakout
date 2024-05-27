@@ -1,16 +1,21 @@
 mod asset_loader;
+mod ball;
 mod camera;
+mod collision;
 mod debug;
 mod input;
+mod movement;
 mod paddle;
 
 use asset_loader::AssetLoaderPlugin;
+use ball::BallPlugin;
 use bevy::prelude::*;
-use bevy_rapier2d::prelude::*;
 
 use camera::CameraPlugins;
+use collision::CollsionPlugin;
 use debug::DebugPlugin;
 use input::GameInput;
+use movement::MovementPlugin;
 use paddle::PaddlePlugin;
 
 fn main() {
@@ -20,14 +25,14 @@ fn main() {
             color: Color::default(),
             brightness: 750.0,
         })
-        .add_plugins(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0))
-        .add_plugins(RapierDebugRenderPlugin::default())
         .add_plugins(AssetLoaderPlugin)
+        .add_plugins(MovementPlugin)
         .add_plugins(DefaultPlugins)
         .add_plugins(CameraPlugins)
         .add_plugins(DebugPlugin)
         .add_plugins(PaddlePlugin)
+        .add_plugins(BallPlugin)
         .add_plugins(GameInput)
+        .add_plugins(CollsionPlugin)
         .run();
 }
-

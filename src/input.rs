@@ -29,6 +29,5 @@ fn cursor_position(
         .map(|ray| ray.origin.truncate())
     {
         mouse_position.0 = current_mouse_posision;
-        // info!("Coordinates: {}", current_mouse_posision);
     };
 }

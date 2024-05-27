@@ -11,10 +11,12 @@ impl Plugin for AssetLoaderPlugin {
 #[derive(Resource, Debug, Default)]
 pub struct SceneAssets {
     pub paddle: Handle<Image>,
+    pub ball: Handle<Image>,
 }
 
 fn load_assets(mut scene_assets: ResMut<SceneAssets>, asset_server: Res<AssetServer>) {
     *scene_assets = SceneAssets {
-        paddle: asset_server.load("paddle.png")
+        paddle: asset_server.load("paddle.png"),
+        ball: asset_server.load("ball.png"),
     };
 }
