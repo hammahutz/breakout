@@ -25,7 +25,16 @@ fn exit_game(keyboard_input: Res<ButtonInput<KeyCode>>, mut exit: EventWriter<Ap
 #[derive(Default, Reflect, GizmoConfigGroup)]
 struct DebugGizmos;
 
-fn draw_collider_shapes(mut query: Query<&Collider>, mut gizmos: Gizmos<DebugGizmos>) {
-    gizmos.line_2d(Vec2::new(-100.0, 0.0), Vec2::new(100.0, 0.0), Color::GREEN);
-    gizmos.rect_2d(, rotation, size, color)
+fn draw_collider_shapes(
+    mut query: Query<(&Collider, &Transform)>,
+    mut gizmos: Gizmos<DebugGizmos>,
+) {
+    for (collider, transfrom) in query.iter() {
+        gizmos.primitive_2d(
+            collider.rectangle,
+            transfrom.translation.xy(),
+            0.0,
+            Color::RED,
+        );
+    }
 }

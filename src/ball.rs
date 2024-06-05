@@ -17,7 +17,7 @@ pub struct Ball;
 fn spawn_ball(mut commands: Commands, scene_assets: Res<SceneAssets>) {
     commands.spawn((
         SpriteBundle {
-            texture: scene_assets.ball.clone(),
+            texture: scene_assets.ball.image.clone(),
             transform: Transform::from_xyz(0.0, -0.0, 0.0),
             ..default()
         },

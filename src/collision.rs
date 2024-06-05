@@ -13,8 +13,7 @@ pub struct Collider {
 }
 
 impl Collider {
-    fn new(rectangle: Rectangle) -> Self {
-        rectangle.
+    pub fn new(rectangle: Rectangle) -> Self {
         Self {
             rectangle,
             collided_with: vec![],
