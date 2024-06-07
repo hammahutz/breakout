@@ -6,6 +6,7 @@ mod debug;
 mod input;
 mod movement;
 mod paddle;
+mod util;
 
 use asset_loader::AssetLoaderPlugin;
 use ball::BallPlugin;

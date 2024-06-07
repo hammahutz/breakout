@@ -1,4 +1,4 @@
-use bevy::{prelude::*, render::render_resource::Texture};
+use bevy::prelude::*;
 
 pub struct AssetLoaderPlugin;
 impl Plugin for AssetLoaderPlugin {

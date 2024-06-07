@@ -1,6 +1,8 @@
+use std::{borrow::Borrow, ops::Deref};
+
 use bevy::{app::AppExit, prelude::*};
 
-use crate::collision::Collider;
+use crate::collision::{CircleCollider, RectangleCollider};
 
 pub const IS_DEBUG: bool = true;
 
@@ -11,12 +13,12 @@ impl Plugin for DebugPlugin {
         if !IS_DEBUG {
             return;
         }
-        app.add_systems(Update, (exit_game, draw_collider_shapes))
+        app.add_systems(Update, (draw_collider_rectangle, draw_collider_circle, exit_game))
             .init_gizmo_group::<DebugGizmos>();
     }
 }
 
-fn exit_game(keyboard_input: Res<ButtonInput<KeyCode>>, mut exit: EventWriter<AppExit>) {
+pub(crate) fn exit_game(keyboard_input: Res<ButtonInput<KeyCode>>, mut exit: EventWriter<AppExit>) {
     if keyboard_input.pressed(KeyCode::Escape) {
         exit.send(AppExit);
     }
@@ -25,16 +27,29 @@ fn exit_game(keyboard_input: Res<ButtonInput<KeyCode>>, mut exit: EventWriter<Ap
 #[derive(Default, Reflect, GizmoConfigGroup)]
 struct DebugGizmos;
 
-fn draw_collider_shapes(
-    mut query: Query<(&Collider, &Transform)>,
+fn draw_collider_rectangle(
+    mut query: Query<(&RectangleCollider, &Transform)>,
     mut gizmos: Gizmos<DebugGizmos>,
 ) {
-    for (collider, transfrom) in query.iter() {
+    for (rectangle, transfrom) in query.iter() {
         gizmos.primitive_2d(
-            collider.rectangle,
+            rectangle.primitive2d.clone(),
             transfrom.translation.xy(),
             0.0,
             Color::RED,
+        );
+    }
+}
+fn draw_collider_circle(
+    mut query: Query<(&CircleCollider, &Transform)>,
+    mut gizmos: Gizmos<DebugGizmos>,
+) {
+    for (cicle, transfrom) in query.iter() {
+        gizmos.primitive_2d(
+            cicle.primitive2d.clone(),
+            transfrom.translation.xy(),
+            0.0,
+            Color::BLUE,
         );
     }
 }

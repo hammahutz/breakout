@@ -18,11 +18,11 @@ impl Velocity {
     }
 }
 
+
 #[derive(Component, Debug)]
 pub struct Acceleration {
     value: Vec2,
 }
-
 impl Acceleration {
     fn new(value: Vec2) -> Self {
         Self { value }

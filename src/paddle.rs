@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::asset_loader::SceneAssets;
-use crate::collision::Collider;
+use crate::collision::{CollisionDetection, RectangleCollider};
 use crate::input::MousePosition;
 
 pub struct PaddlePlugin;
@@ -16,23 +16,22 @@ impl Plugin for PaddlePlugin {
 #[derive(Component, Debug)]
 pub struct Paddle;
 
-fn spawn_paddle(
-    mut commands: Commands,
-    scene_assets: Res<SceneAssets>,
-    assets: Res<Assets<Image>>,
-) {
+fn spawn_paddle(mut commands: Commands, scene_assets: Res<SceneAssets>) {
+    let rectangle = Rectangle::new(128.0, 32.0);
+
     commands.spawn((
         SpriteBundle {
             texture: scene_assets.paddle.image.clone(),
             transform: Transform::from_xyz(0.0, -300.0, 0.0),
             sprite: Sprite {
-                custom_size: Some(Vec2::new(128.0, 32.0)),
+                custom_size: Some(rectangle.size()),
                 ..default()
             },
             ..default()
         },
         Paddle,
-        Collider::new(scene_assets.paddle.clone().size(assets)),
+        RectangleCollider::new(rectangle),
+        CollisionDetection::new(),
     ));
 }
 
