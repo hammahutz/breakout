@@ -2,6 +2,7 @@ mod asset_loader;
 mod ball;
 mod camera;
 mod collision;
+mod collision_test;
 mod debug;
 mod input;
 mod movement;

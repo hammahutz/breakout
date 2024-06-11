@@ -1,8 +1,6 @@
-use std::{borrow::Borrow, ops::Deref};
+use bevy::{app::AppExit, math::bounding::BoundingVolume, prelude::*};
 
-use bevy::{app::AppExit, prelude::*};
-
-use crate::collision::{CircleCollider, RectangleCollider};
+use crate::collision::{CircleCollider, Collider, RectangleCollider, Volume};
 
 pub const IS_DEBUG: bool = true;
 
@@ -13,8 +11,16 @@ impl Plugin for DebugPlugin {
         if !IS_DEBUG {
             return;
         }
-        app.add_systems(Update, (draw_collider_rectangle, draw_collider_circle, exit_game))
-            .init_gizmo_group::<DebugGizmos>();
+        app.add_systems(
+            Update,
+            (
+                draw_collider_rectangle,
+                draw_collider_circle,
+                draw_collider,
+                exit_game,
+            ),
+        )
+        .init_gizmo_group::<DebugGizmos>();
     }
 }
 
@@ -28,28 +34,31 @@ pub(crate) fn exit_game(keyboard_input: Res<ButtonInput<KeyCode>>, mut exit: Eve
 struct DebugGizmos;
 
 fn draw_collider_rectangle(
-    mut query: Query<(&RectangleCollider, &Transform)>,
+    query: Query<(&RectangleCollider, &Transform)>,
     mut gizmos: Gizmos<DebugGizmos>,
 ) {
     for (rectangle, transfrom) in query.iter() {
-        gizmos.primitive_2d(
-            rectangle.primitive2d.clone(),
-            transfrom.translation.xy(),
-            0.0,
-            Color::RED,
-        );
+        gizmos.primitive_2d(rectangle.shape, transfrom.translation.xy(), 0.0, Color::RED);
     }
 }
 fn draw_collider_circle(
-    mut query: Query<(&CircleCollider, &Transform)>,
+    query: Query<(&CircleCollider, &Transform)>,
     mut gizmos: Gizmos<DebugGizmos>,
 ) {
     for (cicle, transfrom) in query.iter() {
-        gizmos.primitive_2d(
-            cicle.primitive2d.clone(),
-            transfrom.translation.xy(),
-            0.0,
-            Color::BLUE,
-        );
+        gizmos.primitive_2d(cicle.shape, transfrom.translation.xy(), 0.0, Color::BLUE);
+    }
+}
+
+fn draw_collider(query: Query<&Volume>, mut gizmos: Gizmos<DebugGizmos>) {
+    for volume in query.iter() {
+        match volume {
+            Volume::Aabb2d(a) => {
+                gizmos.rect_2d(a.center(), 0.0, a.half_size().xy() * 2.0, Color::RED);
+            }
+            Volume::BoundingCircle(a) => {
+                gizmos.circle_2d(a.center(), a.radius(), Color::GREEN);
+            }
+        }
     }
 }

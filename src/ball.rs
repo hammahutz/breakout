@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::asset_loader::SceneAssets;
-use crate::collision::{CircleCollider, CollisionDetection, RectangleCollider};
+use crate::collision::{Collider, RectangleCollider};
 use crate::movement::Velocity;
 
 pub struct BallPlugin;
@@ -25,7 +25,6 @@ fn spawn_ball(mut commands: Commands, scene_assets: Res<SceneAssets>) {
         Ball,
         Velocity::new(Vec2::new(10.0, 0.0)),
         // CircleCollider::new(Circle::new(8.0)),
-        RectangleCollider::new(Rectangle::new(16.0, 16.0)),
-        CollisionDetection::new(),
+        Collider::Circle(Circle::new(8.0)),
     ));
 }
