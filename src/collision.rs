@@ -23,39 +23,6 @@ pub enum Volume {
     BoundingCircle(BoundingCircle),
 }
 
-#[derive(Component, Debug)]
-pub struct RectangleCollider {
-    pub shape: Rectangle,
-}
-
-impl RectangleCollider {
-    pub fn new(collider: Rectangle) -> Self {
-        Self { shape: collider }
-    }
-}
-
-#[derive(Component, Debug)]
-pub struct CircleCollider {
-    pub shape: Circle,
-}
-
-impl CircleCollider {
-    pub fn new(collider: Circle) -> Self {
-        Self { shape: collider }
-    }
-}
-
-// TODO: Create a way to detect colliision from a circle
-// fn update_aabb_circle(mut query: Query<(&Transform, &CircleCollider, &mut CollisionDetection)>) {
-//     for (transform, circle, mut collision_detection) in query.iter_mut() {
-//         collision_detection.aabb = circle.primitived.aabb_2d(
-//             transform.translation.xy(),
-//             transform.rotation.to_euler(EulerRot::XYZ).2,
-//         );
-//     }
-// }
-//
-
 fn update_volume(mut commands: Commands, query: Query<(Entity, &Collider, &Transform)>) {
     for (entity, collider, transform) in query.iter() {
         let translation = transform.translation.xy();
@@ -71,30 +38,6 @@ fn update_volume(mut commands: Commands, query: Query<(Entity, &Collider, &Trans
                 commands
                     .entity(entity)
                     .insert(Volume::BoundingCircle(bouding_circle));
-            }
-        }
-    }
-}
-
-fn update_collsion(query: Query<(Entity, &RectangleCollider, &Transform)>) {
-    for (entity_1, collider_1, transform_1) in query.iter() {
-        for (entity_2, collider_2, transform_2) in query.iter() {
-            if entity_1 == entity_2 {
-                break;
-            }
-
-            let aabb1 = collider_1
-                .shape
-                .aabb_2d(transform_1.translation.xy(), transform_1.rotation.y);
-
-            let aabb2 = collider_2
-                .shape
-                .aabb_2d(transform_2.translation.xy(), transform_2.rotation.y);
-
-            let collision = aabb1.intersects(&aabb2);
-
-            if collision {
-                println!("Collsision");
             }
         }
     }

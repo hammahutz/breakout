@@ -19,9 +19,6 @@ impl SceneAsset {
             image: asset_server.load(path),
         }
     }
-    pub fn size(self, assets: Res<Assets<Image>>) -> Rectangle {
-        Rectangle::from_size(assets.get(self.image.id()).unwrap().size_f32())
-    }
 }
 
 #[derive(Resource, Debug, Default)]

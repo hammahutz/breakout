@@ -18,7 +18,6 @@ impl Velocity {
     }
 }
 
-
 #[derive(Component, Debug)]
 pub struct Acceleration {
     value: Vec2,
