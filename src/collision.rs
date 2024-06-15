@@ -3,7 +3,7 @@ use bevy::{
     prelude::*,
 };
 
-use crate::{ball::Ball, paddle::Paddle};
+use crate::paddle::Paddle;
 
 pub struct CollsionPlugin;
 
@@ -47,12 +47,12 @@ impl CircleCollider {
     pub fn new(circle: Circle) -> CircleCollider {
         CircleCollider {
             shape: circle,
-            volume: BoundingCircle::new(Vec2::ZERO, 0.),
+            volume: BoundingCircle::new(Vec2::ZERO, 0.0),
         }
     }
 }
 
-fn update_circle(mut commands: Commands, mut query: Query<(&mut CircleCollider, &Transform)>) {
+fn update_circle(mut query: Query<(&mut CircleCollider, &Transform)>) {
     for (mut collider, transform) in query.iter_mut() {
         let translation = transform.translation.xy();
         let rotation = transform.rotation.to_euler(EulerRot::XYZ).2;
@@ -60,7 +60,7 @@ fn update_circle(mut commands: Commands, mut query: Query<(&mut CircleCollider, 
         collider.volume = collider.shape.bounding_circle(translation, rotation);
     }
 }
-fn update_rectanle(mut commands: Commands, mut query: Query<(&mut RectangleCollider, &Transform)>) {
+fn update_rectanle(mut query: Query<(&mut RectangleCollider, &Transform)>) {
     for (mut collider, transform) in query.iter_mut() {
         let translation = transform.translation.xy();
         let rotation = transform.rotation.to_euler(EulerRot::XYZ).2;
@@ -101,7 +101,7 @@ fn recive_collsison(
         println!("{:?} collided with {:?}", event.0, event.1);
 
         if let Ok(paddle) = query.get(event.1) {
-            println!("Paddle");
+            println!("Paddle: {:?}", paddle);
         } else {
             commands.entity(event.0).despawn();
         }

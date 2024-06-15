@@ -22,11 +22,11 @@ impl Velocity {
 pub struct Acceleration {
     value: Vec2,
 }
-impl Acceleration {
-    fn new(value: Vec2) -> Self {
-        Self { value }
-    }
-}
+// impl Acceleration {
+//     fn new(value: Vec2) -> Self {
+//         Self { value }
+//     }
+// }
 
 fn update_position(mut query: Query<(&mut Transform, &Velocity)>, time: Res<Time>) {
     for (mut transform, velocity) in query.iter_mut() {
