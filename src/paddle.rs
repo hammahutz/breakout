@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::asset_loader::SceneAssets;
-use crate::collision::Collider;
+use crate::collision::RectangleCollider;
 use crate::input::MousePosition;
 
 pub struct PaddlePlugin;
@@ -30,7 +30,7 @@ fn spawn_paddle(mut commands: Commands, scene_assets: Res<SceneAssets>) {
             ..default()
         },
         Paddle,
-        Collider::Rectangle(rectangle),
+        RectangleCollider::new(rectangle),
     ));
 }
 

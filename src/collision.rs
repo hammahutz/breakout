@@ -9,40 +9,63 @@ pub struct CollsionPlugin;
 
 impl Plugin for CollsionPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (recive_collsison, update_collsions, update_volume))
-            .add_event::<CollisionEvent>();
+        app.add_systems(
+            Update,
+            (
+                recive_collsison,
+                update_collsions,
+                update_rectanle,
+                update_circle,
+            ),
+        )
+        .add_event::<CollisionEvent>();
     }
 }
 
 #[derive(Component, Debug)]
-pub enum Collider {
-    Rectangle(Rectangle),
-    Circle(Circle),
+pub struct RectangleCollider {
+    pub shape: Rectangle,
+    pub volume: Aabb2d,
+}
+
+impl RectangleCollider {
+    pub fn new(rectangle: Rectangle) -> RectangleCollider {
+        RectangleCollider {
+            shape: rectangle,
+            volume: Aabb2d::new(Vec2::ZERO, Vec2::ZERO),
+        }
+    }
 }
 
 #[derive(Component, Debug)]
-pub enum Volume {
-    Aabb2d(Aabb2d),
-    BoundingCircle(BoundingCircle),
+pub struct CircleCollider {
+    pub shape: Circle,
+    pub volume: BoundingCircle,
 }
 
-fn update_volume(mut commands: Commands, query: Query<(Entity, &Collider, &Transform)>) {
-    for (entity, collider, transform) in query.iter() {
+impl CircleCollider {
+    pub fn new(circle: Circle) -> CircleCollider {
+        CircleCollider {
+            shape: circle,
+            volume: BoundingCircle::new(Vec2::ZERO, 0.),
+        }
+    }
+}
+
+fn update_circle(mut commands: Commands, mut query: Query<(&mut CircleCollider, &Transform)>) {
+    for (mut collider, transform) in query.iter_mut() {
         let translation = transform.translation.xy();
         let rotation = transform.rotation.to_euler(EulerRot::XYZ).2;
 
-        match collider {
-            Collider::Rectangle(r) => {
-                let aabb2d = r.aabb_2d(translation, rotation);
-                commands.entity(entity).insert(Volume::Aabb2d(aabb2d));
-            }
-            Collider::Circle(c) => {
-                let bouding_circle = c.bounding_circle(translation, rotation);
-                commands
-                    .entity(entity)
-                    .insert(Volume::BoundingCircle(bouding_circle));
-            }
-        }
+        collider.volume = collider.shape.bounding_circle(translation, rotation);
+    }
+}
+fn update_rectanle(mut commands: Commands, mut query: Query<(&mut RectangleCollider, &Transform)>) {
+    for (mut collider, transform) in query.iter_mut() {
+        let translation = transform.translation.xy();
+        let rotation = transform.rotation.to_euler(EulerRot::XYZ).2;
+
+        collider.volume = collider.shape.aabb_2d(translation, rotation);
     }
 }
 
@@ -50,26 +73,21 @@ fn update_volume(mut commands: Commands, query: Query<(Entity, &Collider, &Trans
 struct CollisionEvent(Entity, Entity);
 
 fn update_collsions(
-    balls: Query<(Entity, &Volume), With<Ball>>,
-    colliders: Query<(Entity, &Volume), Without<Ball>>,
+    balls: Query<(Entity, &CircleCollider)>,
+    rectangles: Query<(Entity, &RectangleCollider)>,
     mut collision_event: EventWriter<CollisionEvent>,
 ) {
-    for (ball, ball_volume) in balls.iter() {
-        for (collider, collider_volyme) in colliders.iter() {
-            let collision = match ball_volume {
-                Volume::Aabb2d(a) => match collider_volyme {
-                    Volume::Aabb2d(b) => a.intersects(b),
-                    Volume::BoundingCircle(b) => a.intersects(b),
-                },
-                Volume::BoundingCircle(a) => match collider_volyme {
-                    Volume::Aabb2d(b) => a.intersects(b),
-                    Volume::BoundingCircle(b) => a.intersects(b),
-                },
-            };
+    for (ball, circle_collider) in balls.iter() {
+        for (rectangle, rectangle_collider) in rectangles.iter() {
+            let collision = &circle_collider
+                .volume
+                .intersects(&rectangle_collider.volume);
 
-            if collision {
-                collision_event.send(CollisionEvent(ball, collider));
+            if !collision {
+                continue;
             }
+
+            collision_event.send(CollisionEvent(ball, rectangle));
         }
     }
 }
