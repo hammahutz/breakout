@@ -1,6 +1,9 @@
 use bevy::{app::AppExit, math::bounding::BoundingVolume, prelude::*};
 
-use crate::collision::{CircleCollider, RectangleCollider};
+use crate::{
+    collision::{CircleCollider, RectangleCollider},
+    input::MousePosition,
+};
 
 pub const IS_DEBUG: bool = true;
 
@@ -11,7 +14,7 @@ impl Plugin for DebugPlugin {
         if !IS_DEBUG {
             return;
         }
-        app.add_systems(Update, (draw_collider, exit_game))
+        app.add_systems(Update, (draw_collider, exit_game, check_coordinates))
             .init_gizmo_group::<DebugGizmos>();
     }
 }
@@ -38,4 +41,8 @@ fn draw_collider(
             gizmos.primitive_2d(circle.shape, circle.volume.center(), 0.0, Color::GREEN)
         }
     }
+}
+
+fn check_coordinates(mouse_position: Res<MousePosition>) {
+    // println!("{:?}", mouse_position)
 }

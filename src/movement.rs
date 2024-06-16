@@ -10,7 +10,7 @@ impl Plugin for MovementPlugin {
 
 #[derive(Component, Debug)]
 pub struct Velocity {
-    value: Vec2,
+    pub value: Vec2,
 }
 impl Velocity {
     pub fn new(value: Vec2) -> Self {

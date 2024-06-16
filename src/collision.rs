@@ -1,9 +1,11 @@
 use bevy::{
-    math::bounding::{Aabb2d, Bounded2d, BoundingCircle, IntersectsVolume},
+    ecs::entity,
+    math::bounding::{Aabb2d, Bounded2d, BoundingCircle, BoundingVolume, IntersectsVolume},
     prelude::*,
+    utils::tracing::event_enabled,
 };
 
-use crate::paddle::Paddle;
+use crate::{ball::Ball, movement::Velocity, paddle::Paddle};
 
 pub struct CollsionPlugin;
 
@@ -70,40 +72,69 @@ fn update_rectanle(mut query: Query<(&mut RectangleCollider, &Transform)>) {
 }
 
 #[derive(Event)]
-struct CollisionEvent(Entity, Entity);
+struct CollisionEvent(Entity, Entity, CollisionSide);
 
 fn update_collsions(
     balls: Query<(Entity, &CircleCollider)>,
     rectangles: Query<(Entity, &RectangleCollider)>,
     mut collision_event: EventWriter<CollisionEvent>,
 ) {
-    for (ball, circle_collider) in balls.iter() {
+    for (ball, ball_collider) in balls.iter() {
         for (rectangle, rectangle_collider) in rectangles.iter() {
-            let collision = &circle_collider
-                .volume
-                .intersects(&rectangle_collider.volume);
-
-            if !collision {
-                continue;
+            if let Some(collision_side) = get_side_of_collision(ball_collider, rectangle_collider) {
+                collision_event.send(CollisionEvent(ball, rectangle, collision_side));
             }
-
-            collision_event.send(CollisionEvent(ball, rectangle));
         }
     }
+}
+
+#[derive(Debug)]
+enum CollisionSide {
+    Right,
+    Bottom,
+    Left,
+    Top,
+}
+
+fn get_side_of_collision(
+    ball: &CircleCollider,
+    rectangle: &RectangleCollider,
+) -> Option<CollisionSide> {
+    let diff = ball.volume.center() - rectangle.volume.closest_point(ball.volume.center());
+    println!("{}", diff);
+
+    if !&rectangle.volume.intersects(&ball.volume) {
+        return None;
+    }
+
+    let side = if diff.x.abs() > diff.y.abs() {
+        if diff.x > 0.0 {
+            CollisionSide::Left
+        } else {
+            CollisionSide::Right
+        }
+    } else if diff.y > 0.0 {
+        CollisionSide::Top
+    } else {
+        CollisionSide::Bottom
+    };
+
+    Some(side)
 }
 
 fn recive_collsison(
     mut commands: Commands,
     mut collision_event: EventReader<CollisionEvent>,
-    query: Query<&Paddle>,
+    mut balls: Query<&mut Velocity, With<Ball>>,
 ) {
     for event in collision_event.read() {
-        println!("{:?} collided with {:?}", event.0, event.1);
-
-        if let Ok(paddle) = query.get(event.1) {
-            println!("Paddle: {:?}", paddle);
-        } else {
-            commands.entity(event.0).despawn();
+        if let Ok(mut ball) = balls.get_mut(event.0) {
+            match event.2 {
+                CollisionSide::Right => ball.value.x = ball.value.x.abs() * -1.0,
+                CollisionSide::Bottom => ball.value.y = ball.value.y.abs() * -1.0,
+                CollisionSide::Left => ball.value.x = ball.value.x.abs(),
+                CollisionSide::Top => ball.value.y = ball.value.y.abs(),
+            };
         }
     }
 }
