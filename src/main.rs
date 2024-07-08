@@ -7,6 +7,7 @@ mod input;
 mod movement;
 mod paddle;
 mod util;
+mod wall;
 
 use asset_loader::AssetLoaderPlugin;
 use ball::BallPlugin;
@@ -18,6 +19,7 @@ use debug::DebugPlugin;
 use input::GameInput;
 use movement::MovementPlugin;
 use paddle::PaddlePlugin;
+use wall::WallPlugin;
 
 fn main() {
     App::new()
@@ -35,5 +37,6 @@ fn main() {
         .add_plugins(BallPlugin)
         .add_plugins(GameInput)
         .add_plugins(CollsionPlugin)
+        .add_plugins(WallPlugin)
         .run();
 }

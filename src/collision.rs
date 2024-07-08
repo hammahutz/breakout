@@ -101,7 +101,7 @@ fn get_side_of_collision(
     rectangle: &RectangleCollider,
 ) -> Option<CollisionSide> {
     let diff = ball.volume.center() - rectangle.volume.closest_point(ball.volume.center());
-    println!("{}", diff);
+    // println!("{}", diff);
 
     if !&rectangle.volume.intersects(&ball.volume) {
         return None;
