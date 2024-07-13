@@ -1,5 +1,6 @@
 mod asset_loader;
 mod ball;
+mod block;
 mod camera;
 mod collision;
 mod debug;
@@ -7,19 +8,18 @@ mod input;
 mod movement;
 mod paddle;
 mod util;
-mod wall;
+
+use bevy::prelude::*;
 
 use asset_loader::AssetLoaderPlugin;
 use ball::BallPlugin;
-use bevy::prelude::*;
-
+use block::BlockPlugin;
 use camera::CameraPlugins;
 use collision::CollsionPlugin;
 use debug::DebugPlugin;
 use input::GameInput;
 use movement::MovementPlugin;
 use paddle::PaddlePlugin;
-use wall::WallPlugin;
 
 fn main() {
     App::new()
@@ -37,6 +37,6 @@ fn main() {
         .add_plugins(BallPlugin)
         .add_plugins(GameInput)
         .add_plugins(CollsionPlugin)
-        .add_plugins(WallPlugin)
+        .add_plugins(BlockPlugin)
         .run();
 }

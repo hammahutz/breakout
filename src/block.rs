@@ -3,11 +3,26 @@ use bevy::prelude::*;
 use crate::asset_loader::SceneAssets;
 use crate::collision::RectangleCollider;
 
-pub struct WallPlugin;
+pub struct BlockPlugin;
 
-impl Plugin for WallPlugin {
+impl Plugin for BlockPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(PostStartup, spawn_wall);
+    }
+}
+
+#[derive(Component, Debug, Clone, Copy)]
+pub struct Block {
+    position: Vec2,
+    dimension: Vec2,
+}
+
+impl Block {
+    pub fn new(position: Vec2, dimension: Vec2) -> Self {
+        Self {
+            position,
+            dimension,
+        }
     }
 }
 
@@ -17,30 +32,21 @@ pub struct Wall {
     dimension: Vec2,
 }
 
-impl Wall {
-    pub fn new(position: Vec2, dimension: Vec2) -> Self {
-        Self {
-            position,
-            dimension,
-        }
-    }
-}
-
 fn spawn_wall(mut commands: Commands, scene_assets: Res<SceneAssets>, window: Query<&Window>) {
     let window = window.single();
     let wall_thicknes = 10.0;
     let screen_width = window.resolution.width();
     let screen_height = window.resolution.height();
 
-    let left_wall = Wall::new(
+    let left_wall = Block::new(
         Vec2::new(screen_width / 2.0, 0.0),
         Vec2::new(wall_thicknes, screen_height),
     );
-    let right_wall = Wall::new(
+    let right_wall = Block::new(
         Vec2::new(-screen_width / 2.0, 0.0),
         Vec2::new(wall_thicknes, screen_height),
     );
-    let top_wall = Wall::new(
+    let top_wall = Block::new(
         Vec2::new(0.0, screen_height / 2.0),
         Vec2::new(screen_width, 10.0),
     );
