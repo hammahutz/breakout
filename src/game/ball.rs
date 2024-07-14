@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{asset_loader::SceneAssets, collision::CircleCollider, movement::Velocity};
+use super::{asset_loader::SceneAssets, collision::CircleCollider, movement::Velocity};
 
 pub struct BallPlugin;
 

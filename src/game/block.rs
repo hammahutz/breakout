@@ -1,7 +1,6 @@
 use bevy::prelude::*;
 
-use crate::asset_loader::SceneAssets;
-use crate::collision::RectangleCollider;
+use super::{asset_loader::SceneAssets, collision::RectangleCollider};
 
 pub struct BlockPlugin;
 
@@ -24,12 +23,6 @@ impl Block {
             dimension,
         }
     }
-}
-
-#[derive(Component, Debug, Clone, Copy)]
-pub struct Wall {
-    position: Vec2,
-    dimension: Vec2,
 }
 
 fn spawn_wall(mut commands: Commands, scene_assets: Res<SceneAssets>, window: Query<&Window>) {

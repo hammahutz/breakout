@@ -1,11 +1,9 @@
 use bevy::{
-    ecs::entity,
     math::bounding::{Aabb2d, Bounded2d, BoundingCircle, BoundingVolume, IntersectsVolume},
     prelude::*,
-    utils::tracing::event_enabled,
 };
 
-use crate::{ball::Ball, movement::Velocity, paddle::Paddle};
+use super::{ball::Ball, movement::Velocity};
 
 pub struct CollsionPlugin;
 
@@ -123,7 +121,6 @@ fn get_side_of_collision(
 }
 
 fn recive_collsison(
-    mut commands: Commands,
     mut collision_event: EventReader<CollisionEvent>,
     mut balls: Query<&mut Velocity, With<Ball>>,
 ) {

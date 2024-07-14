@@ -1,8 +1,6 @@
 use bevy::prelude::*;
 
-use crate::asset_loader::SceneAssets;
-use crate::collision::RectangleCollider;
-use crate::input::MousePosition;
+use super::{asset_loader::SceneAssets, collision::RectangleCollider, input::MousePosition};
 
 pub struct PaddlePlugin;
 

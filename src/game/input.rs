@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
-use crate::camera::GameCamera;
+use super::camera::GameCamera;
 
 pub struct GameInput;
 
