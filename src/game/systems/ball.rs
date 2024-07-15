@@ -1,6 +1,5 @@
+use crate::game::prelude::*;
 use bevy::prelude::*;
-
-use super::{asset_loader::SceneAssets, collision::CircleCollider, movement::Velocity};
 
 pub struct BallPlugin;
 
@@ -9,9 +8,6 @@ impl Plugin for BallPlugin {
         app.add_systems(PostStartup, spawn_ball);
     }
 }
-
-#[derive(Component, Debug)]
-pub struct Ball;
 
 fn spawn_ball(mut commands: Commands, scene_assets: Res<SceneAssets>) {
     commands.spawn((

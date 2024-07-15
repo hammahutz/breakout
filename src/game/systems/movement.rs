@@ -1,3 +1,4 @@
+use crate::game::prelude::*;
 use bevy::prelude::*;
 
 pub struct MovementPlugin;
@@ -7,26 +8,6 @@ impl Plugin for MovementPlugin {
         app.add_systems(Update, (update_position, update_velocity));
     }
 }
-
-#[derive(Component, Debug)]
-pub struct Velocity {
-    pub value: Vec2,
-}
-impl Velocity {
-    pub fn new(value: Vec2) -> Self {
-        Self { value }
-    }
-}
-
-#[derive(Component, Debug)]
-pub struct Acceleration {
-    value: Vec2,
-}
-// impl Acceleration {
-//     fn new(value: Vec2) -> Self {
-//         Self { value }
-//     }
-// }
 
 fn update_position(mut query: Query<(&mut Transform, &Velocity)>, time: Res<Time>) {
     for (mut transform, velocity) in query.iter_mut() {

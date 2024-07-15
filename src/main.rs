@@ -1,5 +1,4 @@
 mod game;
-mod util;
 
 use bevy::prelude::*;
 use game::StartupPlugin;

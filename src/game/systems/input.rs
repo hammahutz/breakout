@@ -1,7 +1,6 @@
+use crate::game::prelude::*;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
-
-use super::camera::GameCamera;
 
 pub struct GameInput;
 
@@ -11,9 +10,6 @@ impl Plugin for GameInput {
             .add_systems(Update, cursor_position);
     }
 }
-
-#[derive(Resource, Default, Debug)]
-pub struct MousePosition(pub Vec2);
 
 fn cursor_position(
     mut mouse_position: ResMut<MousePosition>,

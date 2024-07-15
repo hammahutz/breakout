@@ -1,12 +1,10 @@
+use crate::game::prelude::*;
 use bevy::{
     math::bounding::{Aabb2d, Bounded2d, BoundingCircle, BoundingVolume, IntersectsVolume},
     prelude::*,
 };
 
-use super::{ball::Ball, movement::Velocity};
-
 pub struct CollsionPlugin;
-
 impl Plugin for CollsionPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
@@ -19,36 +17,6 @@ impl Plugin for CollsionPlugin {
             ),
         )
         .add_event::<CollisionEvent>();
-    }
-}
-
-#[derive(Component, Debug)]
-pub struct RectangleCollider {
-    pub shape: Rectangle,
-    pub volume: Aabb2d,
-}
-
-impl RectangleCollider {
-    pub fn new(rectangle: Rectangle) -> RectangleCollider {
-        RectangleCollider {
-            shape: rectangle,
-            volume: Aabb2d::new(Vec2::ZERO, Vec2::ZERO),
-        }
-    }
-}
-
-#[derive(Component, Debug)]
-pub struct CircleCollider {
-    pub shape: Circle,
-    pub volume: BoundingCircle,
-}
-
-impl CircleCollider {
-    pub fn new(circle: Circle) -> CircleCollider {
-        CircleCollider {
-            shape: circle,
-            volume: BoundingCircle::new(Vec2::ZERO, 0.0),
-        }
     }
 }
 
@@ -69,9 +37,6 @@ fn update_rectanle(mut query: Query<(&mut RectangleCollider, &Transform)>) {
     }
 }
 
-#[derive(Event)]
-struct CollisionEvent(Entity, Entity, CollisionSide);
-
 fn update_collsions(
     balls: Query<(Entity, &CircleCollider)>,
     rectangles: Query<(Entity, &RectangleCollider)>,
@@ -84,14 +49,6 @@ fn update_collsions(
             }
         }
     }
-}
-
-#[derive(Debug)]
-enum CollisionSide {
-    Right,
-    Bottom,
-    Left,
-    Top,
 }
 
 fn get_side_of_collision(

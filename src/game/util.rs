@@ -9,3 +9,11 @@
 //         Vec2::new(rectangle.)
 //     }
 // }
+//
+#[derive(Debug)]
+pub enum CollisionSide {
+    Left,
+    Right,
+    Top,
+    Bottom,
+}

@@ -1,9 +1,5 @@
+use crate::game::prelude::*;
 use bevy::{app::AppExit, math::bounding::BoundingVolume, prelude::*};
-
-use super::{
-    collision::{CircleCollider, RectangleCollider},
-    // input::MousePosition,
-};
 
 pub const IS_DEBUG: bool = true;
 

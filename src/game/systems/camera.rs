@@ -1,3 +1,4 @@
+use crate::game::prelude::*;
 use bevy::prelude::*;
 
 pub struct CameraPlugins;
@@ -7,9 +8,6 @@ impl Plugin for CameraPlugins {
         app.add_systems(Startup, spawn_camera);
     }
 }
-
-#[derive(Component, Debug)]
-pub struct GameCamera;
 
 fn spawn_camera(mut commands: Commands) {
     commands.spawn((

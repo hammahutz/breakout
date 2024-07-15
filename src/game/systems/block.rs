@@ -1,27 +1,11 @@
+use crate::game::prelude::*;
 use bevy::prelude::*;
-
-use super::{asset_loader::SceneAssets, collision::RectangleCollider};
 
 pub struct BlockPlugin;
 
 impl Plugin for BlockPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(PostStartup, spawn_wall);
-    }
-}
-
-#[derive(Component, Debug, Clone, Copy)]
-pub struct Block {
-    position: Vec2,
-    dimension: Vec2,
-}
-
-impl Block {
-    pub fn new(position: Vec2, dimension: Vec2) -> Self {
-        Self {
-            position,
-            dimension,
-        }
     }
 }
 

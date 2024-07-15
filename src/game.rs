@@ -1,23 +1,20 @@
-mod asset_loader;
-mod ball;
-mod block;
-mod camera;
-mod collision;
-mod debug;
-mod input;
-mod movement;
-mod paddle;
+mod bundles;
+mod components;
+mod events;
+mod resources;
+mod systems;
+mod util;
 
-use asset_loader::AssetLoaderPlugin;
-use ball::BallPlugin;
 use bevy::prelude::*;
-use block::BlockPlugin;
-use camera::CameraPlugins;
-use collision::CollsionPlugin;
-use debug::DebugPlugin;
-use input::GameInput;
-use movement::MovementPlugin;
-use paddle::PaddlePlugin;
+use systems::prelude::*;
+
+pub mod prelude {
+    pub use super::bundles::prelude::*;
+    pub use super::components::prelude::*;
+    pub use super::events::prelude::*;
+    pub use super::resources::prelude::*;
+    pub use super::util::*;
+}
 
 pub struct StartupPlugin;
 impl Plugin for StartupPlugin {

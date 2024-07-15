@@ -1,6 +1,5 @@
+use crate::game::prelude::*;
 use bevy::prelude::*;
-
-use super::{asset_loader::SceneAssets, collision::RectangleCollider, input::MousePosition};
 
 pub struct PaddlePlugin;
 
@@ -10,9 +9,6 @@ impl Plugin for PaddlePlugin {
             .add_systems(Update, move_paddle);
     }
 }
-
-#[derive(Component, Debug)]
-pub struct Paddle;
 
 fn spawn_paddle(mut commands: Commands, scene_assets: Res<SceneAssets>) {
     let rectangle = Rectangle::new(128.0, 32.0);
