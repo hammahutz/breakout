@@ -1,5 +1,5 @@
-mod bundles;
 mod components;
+mod entities;
 mod events;
 mod resources;
 mod systems;
@@ -9,8 +9,8 @@ use bevy::prelude::*;
 use systems::prelude::*;
 
 pub mod prelude {
-    pub use super::bundles::prelude::*;
     pub use super::components::prelude::*;
+    pub use super::entities::prelude::*;
     pub use super::events::prelude::*;
     pub use super::resources::prelude::*;
     pub use super::util::*;
