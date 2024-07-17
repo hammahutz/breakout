@@ -23,14 +23,14 @@ fn spawn_paddle(mut commands: Commands, scene_assets: Res<SceneAssets>) {
             },
             ..default()
         },
-        Paddle,
+        PaddleComponent,
         RectangleCollider::new(rectangle),
     ));
 }
 
 fn move_paddle(
     mouse_position_resource: Res<MousePosition>,
-    mut paddle_query: Query<&mut Transform, With<Paddle>>,
+    mut paddle_query: Query<&mut Transform, With<PaddleComponent>>,
 ) {
     if let Ok(mut transform) = paddle_query.get_single_mut() {
         transform.translation.x = mouse_position_resource.0.x;

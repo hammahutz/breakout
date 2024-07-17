@@ -9,13 +9,16 @@ impl Plugin for MovementPlugin {
     }
 }
 
-fn update_position(mut query: Query<(&mut Transform, &Velocity)>, time: Res<Time>) {
+fn update_position(mut query: Query<(&mut Transform, &VelocityComponent)>, time: Res<Time>) {
     for (mut transform, velocity) in query.iter_mut() {
         transform.translation += Vec3::from((velocity.value, 0.0)) * time.delta_seconds();
     }
 }
 
-fn update_velocity(mut query: Query<(&mut Velocity, &Acceleration)>, time: Res<Time>) {
+fn update_velocity(
+    mut query: Query<(&mut VelocityComponent, &AccelerationComponent)>,
+    time: Res<Time>,
+) {
     for (mut velocity, aceleration) in query.iter_mut() {
         velocity.value += aceleration.value * time.delta_seconds();
     }

@@ -1,4 +1,6 @@
 use bevy::prelude::*;
 
 #[derive(Component, Debug)]
-pub struct PaddleComponent;
+pub struct HealthComponent {
+    pub value: u8,
+}

@@ -79,7 +79,7 @@ fn get_side_of_collision(
 
 fn recive_collsison(
     mut collision_event: EventReader<CollisionEvent>,
-    mut balls: Query<&mut Velocity, With<Ball>>,
+    mut balls: Query<&mut VelocityComponent, With<Ball>>,
 ) {
     for event in collision_event.read() {
         if let Ok(mut ball) = balls.get_mut(event.0) {

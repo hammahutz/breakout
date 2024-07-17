@@ -1,10 +1,10 @@
 use bevy::prelude::*;
 #[derive(Component, Debug)]
-pub struct Acceleration {
+pub struct AccelerationComponent {
     pub value: Vec2,
 }
 
-impl Acceleration {
+impl AccelerationComponent {
     pub fn new(value: Vec2) -> Self {
         Self { value }
     }
