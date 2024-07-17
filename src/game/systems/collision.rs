@@ -1,4 +1,4 @@
-use crate::game::prelude::*;
+use crate::game::{components::health, prelude::*};
 use bevy::{
     math::bounding::{Aabb2d, Bounded2d, BoundingCircle, BoundingVolume, IntersectsVolume},
     prelude::*,
@@ -7,16 +7,8 @@ use bevy::{
 pub struct CollsionPlugin;
 impl Plugin for CollsionPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            Update,
-            (
-                recive_collsison,
-                update_collsions,
-                update_rectanle,
-                update_circle,
-            ),
-        )
-        .add_event::<CollisionEvent>();
+        app.add_systems(Update, (update_collsions, update_rectanle, update_circle))
+            .add_event::<CollisionEvent>();
     }
 }
 
@@ -75,20 +67,4 @@ fn get_side_of_collision(
     };
 
     Some(side)
-}
-
-fn recive_collsison(
-    mut collision_event: EventReader<CollisionEvent>,
-    mut balls: Query<&mut VelocityComponent, With<Ball>>,
-) {
-    for event in collision_event.read() {
-        if let Ok(mut ball) = balls.get_mut(event.0) {
-            match event.2 {
-                CollisionSide::Right => ball.value.x = ball.value.x.abs() * -1.0,
-                CollisionSide::Bottom => ball.value.y = ball.value.y.abs() * -1.0,
-                CollisionSide::Left => ball.value.x = ball.value.x.abs(),
-                CollisionSide::Top => ball.value.y = ball.value.y.abs(),
-            };
-        }
-    }
 }

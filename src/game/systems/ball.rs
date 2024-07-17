@@ -5,7 +5,8 @@ pub struct BallPlugin;
 
 impl Plugin for BallPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(PostStartup, spawn_ball);
+        app.add_systems(PostStartup, spawn_ball)
+            .add_systems(Update, recive_collsison);
     }
 }
 
@@ -19,5 +20,22 @@ fn spawn_ball(mut commands: Commands, scene_assets: Res<SceneAssets>) {
         ball: Ball,
         velocity: VelocityComponent::new(Vec2::new(100.0, 100.0)),
         circle_collider: CircleCollider::new(Circle::new(8.0)),
+        damage: DamageComponent { value: 1 },
     });
+}
+
+fn recive_collsison(
+    mut collision_event: EventReader<CollisionEvent>,
+    mut balls: Query<&mut VelocityComponent, With<Ball>>,
+) {
+    for event in collision_event.read() {
+        if let Ok(mut ball) = balls.get_mut(event.0) {
+            match event.2 {
+                CollisionSide::Right => ball.value.x = ball.value.x.abs() * -1.0,
+                CollisionSide::Bottom => ball.value.y = ball.value.y.abs() * -1.0,
+                CollisionSide::Left => ball.value.x = ball.value.x.abs(),
+                CollisionSide::Top => ball.value.y = ball.value.y.abs(),
+            };
+        }
+    }
 }

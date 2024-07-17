@@ -17,3 +17,8 @@ pub enum CollisionSide {
     Top,
     Bottom,
 }
+
+#[derive(Debug)]
+pub struct Settings {
+    wall_thicknse: u32,
+}

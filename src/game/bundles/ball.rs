@@ -7,4 +7,5 @@ pub struct BallBundle {
     pub ball: Ball,
     pub velocity: VelocityComponent,
     pub circle_collider: CircleCollider,
+    pub damage: DamageComponent,
 }
