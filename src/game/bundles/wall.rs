@@ -19,11 +19,11 @@ impl WallBundle {
     pub fn new(
         side: WallSide,
         texture: Handle<Image>,
-        wall_thicknes: f32,
+        wall_thickness: f32,
         level_width: f32,
         level_height: f32,
     ) -> Self {
-        let block = WallBundle::get_block(side, wall_thicknes, level_width, level_height);
+        let block = WallBundle::get_block(side, wall_thickness, level_width, level_height);
 
         let sprite = SpriteBundle {
             texture,

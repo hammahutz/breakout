@@ -1,7 +1,7 @@
 pub mod ball;
-pub mod block;
+pub mod wall;
 
 pub mod prelude {
     pub use super::ball::*;
-    pub use super::block::*;
+    pub use super::wall::*;
 }
