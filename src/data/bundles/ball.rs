@@ -1,4 +1,4 @@
-use crate::game::prelude::*;
+use crate::data::components::{Ball, CircleCollider, DamageComponent, VelocityComponent};
 use bevy::prelude::*;
 
 #[derive(Bundle)]

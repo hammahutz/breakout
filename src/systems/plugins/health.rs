@@ -1,4 +1,7 @@
-use crate::game::prelude::*;
+use crate::data::{
+    components::{Ball, Block, DamageComponent, HealthComponent},
+    events::CollisionEvent,
+};
 use bevy::prelude::*;
 
 pub struct HealthSystemPlugin;

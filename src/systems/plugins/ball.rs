@@ -1,5 +1,12 @@
-use crate::game::prelude::*;
 use bevy::prelude::*;
+
+use crate::data::{
+    bundles::BallBundle,
+    components::{Ball, CircleCollider, DamageComponent, VelocityComponent},
+    events::CollisionEvent,
+    resources::SceneAssets,
+    util::CollisionSide,
+};
 
 pub struct BallPlugin;
 

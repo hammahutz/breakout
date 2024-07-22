@@ -1,6 +1,8 @@
-use crate::game::prelude::*;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
+
+use crate::data::components::GameCamera;
+use crate::data::resources::MousePosition;
 
 pub struct GameInput;
 

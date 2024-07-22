@@ -1,5 +1,6 @@
-use crate::game::prelude::*;
 use bevy::{app::AppExit, math::bounding::BoundingVolume, prelude::*};
+
+use crate::data::components::{CircleCollider, RectangleCollider};
 
 pub const IS_DEBUG: bool = true;
 

@@ -1,5 +1,6 @@
-use crate::game::prelude::*;
 use bevy::prelude::*;
+
+use crate::data::components::{AccelerationComponent, VelocityComponent};
 
 pub struct MovementPlugin;
 

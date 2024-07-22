@@ -1,5 +1,6 @@
-use crate::game::prelude::*;
 use bevy::prelude::*;
+
+use crate::data::components::{Block, HealthComponent, RectangleCollider};
 
 #[derive(Bundle)]
 pub struct WallBundle {
