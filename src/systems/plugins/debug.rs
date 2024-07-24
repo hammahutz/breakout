@@ -13,7 +13,6 @@ impl Plugin for DebugPlugin {
         }
         app.add_systems(Update, draw_collider)
             .add_systems(Update, exit_game)
-            // .add_systems(Update, ( check_coordinates)
             .init_gizmo_group::<DebugGizmos>();
     }
 }
@@ -31,7 +30,6 @@ fn draw_collider(
     query: Query<AnyOf<(&RectangleCollider, &CircleCollider)>>,
     mut gizmos: Gizmos<DebugGizmos>,
 ) {
-    //TODO: Fixa så att även vinklen fungerar
     for (rectangle, circle) in &query {
         if let Some(rectangle) = rectangle {
             gizmos.primitive_2d(rectangle.shape, rectangle.volume.center(), 0.0, Color::RED)
@@ -41,7 +39,3 @@ fn draw_collider(
         }
     }
 }
-
-// fn check_coordinates(mouse_position: Res<MousePosition>) {
-//     println!("{:?}", mouse_position)
-// }

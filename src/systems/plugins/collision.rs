@@ -1,5 +1,5 @@
 use bevy::{
-    math::bounding::{Aabb2d, Bounded2d, BoundingCircle, BoundingVolume, IntersectsVolume},
+    math::bounding::{Bounded2d, BoundingVolume, IntersectsVolume},
     prelude::*,
 };
 
@@ -53,7 +53,6 @@ fn get_side_of_collision(
     rectangle: &RectangleCollider,
 ) -> Option<CollisionSide> {
     let diff = ball.volume.center() - rectangle.volume.closest_point(ball.volume.center());
-    // println!("{}", diff);
 
     if !&rectangle.volume.intersects(&ball.volume) {
         return None;

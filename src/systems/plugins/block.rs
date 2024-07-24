@@ -1,14 +1,63 @@
 use crate::data::{
-    bundles::{WallBundle, WallSide},
+    bundles::{BlockBundle, WallBundle, WallSide},
+    components::{Block, HealthComponent, RectangleCollider},
     resources::{GameSettings, SceneAssets},
 };
-use bevy::prelude::*;
+use bevy::{prelude::*, scene::ron::de::Position};
 
 pub struct BlockPlugin;
 
 impl Plugin for BlockPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(PostStartup, spawn_wall);
+        app.add_systems(PostStartup, (spawn_wall, spawn_blocks));
+    }
+}
+
+fn spawn_blocks(mut commands: Commands, scene_assets: Res<SceneAssets>) {
+    let grid_start_position = Vec2::new(-250.0, -250.0);
+    let block_dimension = Vec2::new(50.0, 20.0);
+    let row_column_gap: f32 = 5.0;
+    let texture = scene_assets.paddle.image.clone();
+
+    for row in 0..5 {
+        for column in 0..5 {
+            let position_x =
+                grid_start_position.x + (block_dimension.x + row_column_gap) * row as f32;
+            let position_y =
+                grid_start_position.y + (block_dimension.y + row_column_gap) * column as f32;
+
+            let position = Vec2::new(position_x, position_y);
+
+            commands.spawn(spawn_block(position, block_dimension, texture.clone()));
+        }
+    }
+}
+
+fn spawn_block(position: Vec2, dimension: Vec2, texture: Handle<Image>) -> BlockBundle {
+    let sprite = SpriteBundle {
+        texture,
+        transform: Transform::from_xyz(position.x, position.y, 0.0),
+        sprite: Sprite {
+            custom_size: Some(dimension),
+            ..default()
+        },
+        ..default()
+    };
+
+    let block = Block {
+        position,
+        dimension,
+    };
+
+    let collider = RectangleCollider::new(Rectangle::new(dimension.x, dimension.y));
+
+    let health = HealthComponent { value: 1 };
+
+    BlockBundle {
+        sprite,
+        block,
+        collider,
+        health,
     }
 }
 
