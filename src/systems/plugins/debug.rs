@@ -1,6 +1,8 @@
 use bevy::{app::AppExit, math::bounding::BoundingVolume, prelude::*};
 
-use crate::data::components::{CircleCollider, RectangleCollider};
+use crate::data::components::{
+    Ball, CircleCollider, PaddleComponent, RectangleCollider, VelocityComponent,
+};
 
 pub const IS_DEBUG: bool = true;
 
@@ -11,8 +13,7 @@ impl Plugin for DebugPlugin {
         if !IS_DEBUG {
             return;
         }
-        app.add_systems(Update, draw_collider)
-            .add_systems(Update, exit_game)
+        app.add_systems(Update, (exit_game, draw_collider, draw_vector))
             .init_gizmo_group::<DebugGizmos>();
     }
 }
@@ -38,4 +39,28 @@ fn draw_collider(
             gizmos.primitive_2d(circle.shape, circle.volume.center(), 0.0, Color::GREEN)
         }
     }
+}
+
+fn draw_vector(
+    mut gizmos: Gizmos<DebugGizmos>,
+    ball_query: Query<(&Transform, &VelocityComponent), With<Ball>>,
+    paddle_query: Query<&Transform, With<PaddleComponent>>,
+) {
+    let (ball, vel) = ball_query.single();
+    let paddle = paddle_query.single();
+
+    gizmos.line_2d(
+        Vec2::new(ball.translation.x, ball.translation.y),
+        Vec2::new(paddle.translation.x, paddle.translation.y),
+        Color::PURPLE,
+    );
+
+    gizmos.line_2d(
+        Vec2::new(ball.translation.x, ball.translation.y),
+        Vec2::new(
+            ball.translation.x + vel.value.x,
+            ball.translation.y + vel.value.y,
+        ),
+        Color::BLUE,
+    );
 }

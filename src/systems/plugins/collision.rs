@@ -4,16 +4,25 @@ use bevy::{
 };
 
 use crate::data::{
-    components::{CircleCollider, RectangleCollider},
-    events::CollisionEvent,
+    components::{rectangle_collider, CircleCollider, PaddleComponent, RectangleCollider},
+    events::{CollisionEvent, PaddleCollisionEvent},
     util::CollisionSide,
 };
 
 pub struct CollsionPlugin;
 impl Plugin for CollsionPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (update_collsions, update_rectanle, update_circle))
-            .add_event::<CollisionEvent>();
+        app.add_systems(
+            Update,
+            (
+                update_block_collsions,
+                update_rectanle,
+                update_circle,
+                update_paddle_collision,
+            ),
+        )
+        .add_event::<CollisionEvent>()
+        .add_event::<PaddleCollisionEvent>();
     }
 }
 
@@ -34,9 +43,9 @@ fn update_rectanle(mut query: Query<(&mut RectangleCollider, &Transform)>) {
     }
 }
 
-fn update_collsions(
+fn update_block_collsions(
     balls: Query<(Entity, &CircleCollider)>,
-    rectangles: Query<(Entity, &RectangleCollider)>,
+    rectangles: Query<(Entity, &RectangleCollider), Without<PaddleComponent>>,
     mut collision_event: EventWriter<CollisionEvent>,
 ) {
     for (ball, ball_collider) in balls.iter() {
@@ -71,4 +80,26 @@ fn get_side_of_collision(
     };
 
     Some(side)
+}
+
+fn update_paddle_collision(
+    balls: Query<(Entity, &CircleCollider)>,
+    rectangles: Query<(Entity, &RectangleCollider), With<PaddleComponent>>,
+    mut collision_event: EventWriter<PaddleCollisionEvent>,
+) {
+    let (ball_entity, ball_collider) = balls.single();
+    let (paddle_entity, paddle_collider) = rectangles.single();
+
+    if !paddle_collider.volume.intersects(&ball_collider.volume) {
+        return;
+    }
+
+    let hit_direction =
+        (ball_collider.volume.center() - paddle_collider.volume.center()).normalize();
+
+    collision_event.send(PaddleCollisionEvent(
+        ball_entity,
+        paddle_entity,
+        hit_direction,
+    ));
 }

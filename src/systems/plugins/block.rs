@@ -3,7 +3,8 @@ use crate::data::{
     components::{Block, HealthComponent, RectangleCollider},
     resources::{GameSettings, SceneAssets},
 };
-use bevy::{prelude::*, scene::ron::de::Position};
+
+use bevy::prelude::*;
 
 pub struct BlockPlugin;
 
@@ -14,19 +15,17 @@ impl Plugin for BlockPlugin {
 }
 
 fn spawn_blocks(mut commands: Commands, scene_assets: Res<SceneAssets>) {
-    let grid_start_position = Vec2::new(-250.0, -250.0);
-    let block_dimension = Vec2::new(50.0, 20.0);
-    let row_column_gap: f32 = 5.0;
+    let grid_start_position = Vec2::new(0.0, 0.0);
+    let block_dimension = Vec2::new(100.0, 40.0);
+    let row_column_gap: f32 = 10.0;
     let texture = scene_assets.paddle.image.clone();
 
     for row in 0..5 {
         for column in 0..5 {
-            let position_x =
-                grid_start_position.x + (block_dimension.x + row_column_gap) * row as f32;
-            let position_y =
-                grid_start_position.y + (block_dimension.y + row_column_gap) * column as f32;
-
-            let position = Vec2::new(position_x, position_y);
+            let position = Vec2::new(
+                grid_start_position.x + (block_dimension.x + row_column_gap) * row as f32,
+                grid_start_position.y + (block_dimension.y + row_column_gap) * column as f32,
+            );
 
             commands.spawn(spawn_block(position, block_dimension, texture.clone()));
         }
