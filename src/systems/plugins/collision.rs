@@ -4,11 +4,13 @@ use bevy::{
 };
 
 use crate::data::{
-    components::{rectangle_collider, CircleCollider, PaddleComponent, RectangleCollider},
+    components::{CircleCollider, PaddleComponent, RectangleCollider},
     events::{CollisionEvent, PaddleCollisionEvent},
     util::CollisionSide,
 };
 
+//BUG: Collsision on spawn
+//
 pub struct CollsionPlugin;
 impl Plugin for CollsionPlugin {
     fn build(&self, app: &mut App) {

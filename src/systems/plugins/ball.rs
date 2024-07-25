@@ -1,8 +1,8 @@
-use bevy::{ecs::event, prelude::*};
+use bevy::prelude::*;
 
 use crate::data::{
     bundles::BallBundle,
-    components::{Ball, CircleCollider, DamageComponent, PaddleComponent, VelocityComponent},
+    components::{Ball, CircleCollider, DamageComponent, VelocityComponent},
     events::{CollisionEvent, PaddleCollisionEvent},
     resources::SceneAssets,
     util::CollisionSide,
@@ -21,11 +21,11 @@ fn spawn_ball(mut commands: Commands, scene_assets: Res<SceneAssets>) {
     commands.spawn(BallBundle {
         sprite: SpriteBundle {
             texture: scene_assets.ball.image.clone(),
-            transform: Transform::from_xyz(100.0, 100.0, 0.0),
+            transform: Transform::from_xyz(-200.0, 200.0, 0.0),
             ..default()
         },
         ball: Ball,
-        velocity: VelocityComponent::new(Vec2::new(100.0, 100.0)),
+        velocity: VelocityComponent::new(Vec2::new(200.0, 200.0)),
         circle_collider: CircleCollider::new(Circle::new(8.0)),
         damage: DamageComponent { value: 1 },
     });
@@ -34,7 +34,6 @@ fn spawn_ball(mut commands: Commands, scene_assets: Res<SceneAssets>) {
 fn recive_collsison(
     mut collision_event: EventReader<CollisionEvent>,
     mut balls: Query<&mut VelocityComponent, With<Ball>>,
-    paddle: Query<&PaddleComponent>,
 ) {
     for event in collision_event.read() {
         if let Ok(mut ball) = balls.get_mut(event.0) {
@@ -51,7 +50,6 @@ fn recive_collsison(
 fn recive_paddle_collsison(
     mut collision_event: EventReader<PaddleCollisionEvent>,
     mut balls: Query<&mut VelocityComponent, With<Ball>>,
-    paddle: Query<&PaddleComponent>,
 ) {
     for event in collision_event.read() {
         if event.2.is_nan() {

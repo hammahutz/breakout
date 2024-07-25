@@ -19,6 +19,7 @@ fn update_health_after_collision(
     mut command: Commands,
 ) {
     for event in collision_event.read() {
+        println!("{:?}", event);
         if let Ok(damage) = balls.get(event.0) {
             if let Ok(mut health) = blocks.get_mut(event.1) {
                 if health.value > damage.value {

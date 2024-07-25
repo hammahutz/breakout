@@ -1,5 +1,3 @@
-use bevy::ecs::system::Resource;
-
 #[derive(Debug)]
 pub enum CollisionSide {
     Left,
