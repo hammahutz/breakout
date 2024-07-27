@@ -10,7 +10,7 @@ pub struct BlockPlugin;
 
 impl Plugin for BlockPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(PostStartup, (spawn_wall, spawn_blocks));
+        app.add_systems(Startup, (spawn_wall, spawn_blocks));
     }
 }
 
@@ -51,7 +51,7 @@ fn spawn_block(position: Vec2, dimension: Vec2, texture: Handle<Image>) -> Block
     let collider = RectangleCollider::new(Rectangle::new(dimension.x, dimension.y));
 
     //TODO: Fix bug, collsision on spawn? Health 2 instead of 1 because of this. D:
-    let health = HealthComponent { value: 2 };
+    let health = HealthComponent { value: 3 };
 
     BlockBundle {
         sprite,

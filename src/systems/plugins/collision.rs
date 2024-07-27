@@ -10,12 +10,12 @@ use crate::data::{
 };
 
 //BUG: Collsision on spawn
-//
+
 pub struct CollsionPlugin;
 impl Plugin for CollsionPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
-            Update,
+            FixedUpdate,
             (
                 update_block_collsions,
                 update_rectanle,

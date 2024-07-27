@@ -1,7 +1,11 @@
 use bevy::{app::AppExit, math::bounding::BoundingVolume, prelude::*};
 
-use crate::data::components::{
-    Ball, CircleCollider, PaddleComponent, RectangleCollider, VelocityComponent,
+use crate::data::{
+    components::{
+        Ball, CircleCollider, HealthComponent, PaddleComponent, RectangleCollider,
+        VelocityComponent,
+    },
+    events::CollisionEvent,
 };
 
 pub const IS_DEBUG: bool = true;
@@ -13,7 +17,11 @@ impl Plugin for DebugPlugin {
         if !IS_DEBUG {
             return;
         }
-        app.add_systems(Update, (exit_game, draw_collider, draw_vector))
+        app.add_systems(PostStartup, spawn_health_text)
+            .add_systems(
+                Update,
+                (exit_game, draw_collider, draw_vector, update_health_display),
+            )
             .init_gizmo_group::<DebugGizmos>();
     }
 }
@@ -63,4 +71,34 @@ fn draw_vector(
         ),
         Color::BLUE,
     );
+}
+
+fn spawn_health_text(mut commands: Commands, query: Query<(Entity, &Transform, &HealthComponent)>) {
+    println!("Före Loop");
+    for (entity, transform, health) in &query {
+        println!("I Loop");
+        commands.entity(entity).insert(Text2dBundle {
+            text: Text::from_section(
+                // health_comp.value.to_string(),
+                health.value.to_string(),
+                TextStyle {
+                    font_size: 20.0,
+                    color: Color::CYAN,
+                    ..default()
+                },
+            ),
+            transform: *transform,
+            ..default()
+        });
+    }
+    println!("Efter loop");
+}
+
+fn update_health_display(mut query: Query<(&mut Text, &HealthComponent)>) {
+    for (mut text, health) in query.iter_mut() {
+        let value = health.value.to_string();
+        let style = text.sections[0].style.clone();
+
+        text.sections = vec![TextSection { value, style }];
+    }
 }
