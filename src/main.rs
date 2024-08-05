@@ -24,5 +24,6 @@ fn main() {
         .add_plugins(GameInput)
         .add_plugins(CollsionPlugin)
         .add_plugins(BlockPlugin)
+        .add_plugins(LevelLoaderPlugin)
         .run();
 }

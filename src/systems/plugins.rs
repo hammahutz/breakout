@@ -6,6 +6,7 @@ pub mod collision;
 pub mod debug;
 pub mod health;
 pub mod input;
+pub mod level_loader;
 pub mod movement;
 pub mod paddle;
 
@@ -17,5 +18,6 @@ pub use collision::*;
 pub use debug::*;
 pub use health::*;
 pub use input::*;
+pub use level_loader::*;
 pub use movement::*;
 pub use paddle::*;
