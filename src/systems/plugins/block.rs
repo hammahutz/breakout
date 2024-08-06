@@ -1,7 +1,10 @@
-use crate::data::{
-    bundles::{BlockBundle, WallBundle, WallSide},
-    components::{Block, HealthComponent, RectangleCollider},
-    resources::{GameSettings, SceneAssets},
+use crate::{
+    data::{
+        bundles::{BlockBundle, WallBundle, WallSide},
+        components::{block, Block, HealthComponent, RectangleCollider},
+        resources::{GameSettings, LevelResource, SceneAssets},
+    },
+    load_level,
 };
 
 use bevy::prelude::*;
@@ -10,21 +13,39 @@ pub struct BlockPlugin;
 
 impl Plugin for BlockPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, (spawn_wall, spawn_blocks));
+        app.add_systems(Startup, (spawn_wall, spawn_blocks.after(load_level)));
     }
 }
 
-fn spawn_blocks(mut commands: Commands, scene_assets: Res<SceneAssets>) {
-    let grid_start_position = Vec2::new(0.0, 0.0);
-    let block_dimension = Vec2::new(100.0, 40.0);
-    let row_column_gap: f32 = 10.0;
+fn spawn_blocks(
+    mut commands: Commands,
+    scene_assets: Res<SceneAssets>,
+    level: Res<LevelResource>,
+    window: Query<&Window>,
+) {
     let texture = scene_assets.paddle.image.clone();
+    let block_dimension = Vec2::new(100.0, 40.0);
 
-    for row in 0..5 {
-        for column in 0..5 {
+    let window = window.single();
+    let level_width = window.resolution.width();
+    let level_height = window.resolution.height();
+
+    let grid_start_position = Vec2::new(
+        -level_width / 2.0 + block_dimension.x,
+        level_height / 2.0 - block_dimension.y,
+    );
+    let row_column_gap: f32 = 10.0;
+
+    for (y, row) in level.blocks.iter().enumerate() {
+        for (x, block) in row.iter().enumerate() {
+            //0 is empty
+            if *block == 0 {
+                continue;
+            }
+
             let position = Vec2::new(
-                grid_start_position.x + (block_dimension.x + row_column_gap) * row as f32,
-                grid_start_position.y + (block_dimension.y + row_column_gap) * column as f32,
+                grid_start_position.x + (block_dimension.x + row_column_gap) * y as f32,
+                grid_start_position.y - (block_dimension.y + row_column_gap) * x as f32,
             );
 
             commands.spawn(spawn_block(position, block_dimension, texture.clone()));

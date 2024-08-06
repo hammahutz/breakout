@@ -1,6 +1,6 @@
 use std::{fs::File, io::BufReader};
 
-use bevy::prelude::*;
+use bevy::{prelude::*, reflect::List};
 
 use crate::data::resources::LevelResource;
 
@@ -8,11 +8,12 @@ pub struct LevelLoaderPlugin;
 impl Plugin for LevelLoaderPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<LevelResource>()
-            .add_systems(Startup, load_level);
+            .add_systems(Startup, (load_level,));
     }
 }
 
-fn load_level(mut level: ResMut<LevelResource>) {
+// TODO: Ska dessa var public? Kominkation till BlockPlugin
+pub fn load_level(mut level: ResMut<LevelResource>) {
     let file = match File::open("assets/levels/level1.ron") {
         Ok(f) => f,
         Err(e) => {
@@ -31,7 +32,10 @@ fn load_level(mut level: ResMut<LevelResource>) {
     };
 
     level.blocks = loaded_level.blocks;
-    level.game_dimension = loaded_level.game_dimension;
-
-    println!("{:?}", level);
 }
+
+// fn build_level(mut commands: Commands, level: ResMut<LevelResource>) {
+//     for row in &level.blocks {
+//         for block in row {}
+//     }
+// }
