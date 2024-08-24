@@ -1,5 +1,6 @@
-use crate::data::components::GameCamera;
 use bevy::prelude::*;
+
+use crate::data::components::GameCamera;
 
 pub struct CameraPlugins;
 

@@ -15,7 +15,7 @@ pub struct CollsionPlugin;
 impl Plugin for CollsionPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
-            FixedUpdate,
+            PostUpdate,
             (
                 update_block_collsions,
                 update_rectanle,
@@ -45,6 +45,7 @@ fn update_rectanle(mut query: Query<(&mut RectangleCollider, &Transform)>) {
     }
 }
 
+// BUG Double collsiion
 fn update_block_collsions(
     balls: Query<(Entity, &CircleCollider)>,
     rectangles: Query<(Entity, &RectangleCollider), Without<PaddleComponent>>,

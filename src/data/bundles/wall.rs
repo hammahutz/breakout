@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 
-use crate::data::components::{Block, HealthComponent, RectangleCollider};
+use crate::data::components::{
+    block::Block, health::HealthComponent, rectangle_collider::RectangleCollider,
+};
 
 #[derive(Bundle)]
 pub struct WallBundle {
@@ -36,7 +38,8 @@ impl WallBundle {
             ..default()
         };
 
-        let collider = RectangleCollider::new(Rectangle::from_size(block.dimension));
+        let rectangle_collider = RectangleCollider::new(Rectangle::from_size(block.dimension));
+        let collider = rectangle_collider;
 
         WallBundle {
             sprite,

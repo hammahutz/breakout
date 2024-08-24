@@ -1,6 +1,6 @@
 use std::{fs::File, io::BufReader};
 
-use bevy::{prelude::*, reflect::List};
+use bevy::prelude::*;
 
 use crate::data::resources::LevelResource;
 

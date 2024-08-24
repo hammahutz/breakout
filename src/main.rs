@@ -3,7 +3,10 @@ pub mod systems;
 
 use bevy::prelude::*;
 use data::resources::GameSettings;
-use systems::plugins::*;
+use systems::plugins::{
+    AssetLoaderPlugin, BallPlugin, BlockPlugin, CameraPlugins, CollsionPlugin, DebugPlugin,
+    GameInput, HealthSystemPlugin, LevelLoaderPlugin, MovementPlugin, PaddlePlugin,
+};
 
 fn main() {
     App::new()

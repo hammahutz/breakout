@@ -1,5 +1,9 @@
-use crate::data::components::{Ball, CircleCollider, DamageComponent, VelocityComponent};
 use bevy::prelude::*;
+
+use crate::data::components::{
+    ball::Ball, circle_collider::CircleCollider, damage::DamageComponent,
+    velocity::VelocityComponent,
+};
 
 #[derive(Bundle)]
 pub struct BallBundle {

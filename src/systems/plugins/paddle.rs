@@ -1,8 +1,9 @@
+use bevy::prelude::*;
+
 use crate::data::{
     components::{PaddleComponent, RectangleCollider},
     resources::{MousePosition, SceneAssets},
 };
-use bevy::prelude::*;
 
 pub struct PaddlePlugin;
 

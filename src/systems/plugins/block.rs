@@ -1,13 +1,12 @@
-use crate::{
-    data::{
-        bundles::{BlockBundle, WallBundle, WallSide},
-        components::{block, Block, HealthComponent, RectangleCollider},
-        resources::{GameSettings, LevelResource, SceneAssets},
-    },
-    load_level,
+use crate::data::{
+    bundles::{BlockBundle, WallBundle, WallSide},
+    components::{Block, HealthComponent, RectangleCollider},
+    resources::{GameSettings, LevelResource, SceneAssets},
 };
 
 use bevy::prelude::*;
+
+use super::load_level;
 
 pub struct BlockPlugin;
 

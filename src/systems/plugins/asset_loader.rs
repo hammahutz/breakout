@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::data::resources::{SceneAsset, SceneAssets};
+use crate::data::resources::scene_asset::{SceneAsset, SceneAssets};
 
 pub struct AssetLoaderPlugin;
 impl Plugin for AssetLoaderPlugin {

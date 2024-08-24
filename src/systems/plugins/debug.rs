@@ -1,12 +1,9 @@
 use bevy::{app::AppExit, math::bounding::BoundingVolume, prelude::*};
 
-use crate::data::{
-    components::{
+use crate::data::components::{
         Ball, CircleCollider, HealthComponent, PaddleComponent, RectangleCollider,
         VelocityComponent,
-    },
-    events::CollisionEvent,
-};
+    };
 
 pub const IS_DEBUG: bool = true;
 
