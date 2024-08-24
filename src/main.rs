@@ -5,7 +5,7 @@ use bevy::prelude::*;
 use data::resources::GameSettings;
 use systems::plugins::{
     AssetLoaderPlugin, BallPlugin, BlockPlugin, CameraPlugins, CollsionPlugin, DebugPlugin,
-    GameInput, HealthSystemPlugin, LevelLoaderPlugin, MovementPlugin, PaddlePlugin,
+    GameInput, HealthSystemPlugin, LevelLoaderPlugin, MovementPlugin, PaddlePlugin, SchedulePlugin,
 };
 
 fn main() {
@@ -16,6 +16,7 @@ fn main() {
             brightness: 750.0,
         })
         .insert_resource(GameSettings::new(10.0))
+        .add_plugins(SchedulePlugin)
         .add_plugins(AssetLoaderPlugin)
         .add_plugins(HealthSystemPlugin)
         .add_plugins(MovementPlugin)

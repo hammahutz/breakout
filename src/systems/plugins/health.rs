@@ -4,11 +4,16 @@ use crate::data::{
 };
 use bevy::prelude::*;
 
+use super::GameLoop;
+
 pub struct HealthSystemPlugin;
 
 impl Plugin for HealthSystemPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, update_health_after_collision);
+        app.add_systems(
+            Update,
+            update_health_after_collision.in_set(GameLoop::DamageControll),
+        );
     }
 }
 

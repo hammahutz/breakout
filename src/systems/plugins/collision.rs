@@ -9,19 +9,20 @@ use crate::data::{
     util::CollisionSide,
 };
 
-//BUG: Collsision on spawn
+use super::GameLoop;
 
 pub struct CollsionPlugin;
 impl Plugin for CollsionPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
-            PostUpdate,
+            Update,
             (
                 update_block_collsions,
                 update_rectanle,
                 update_circle,
                 update_paddle_collision,
-            ),
+            )
+                .in_set(GameLoop::CollisionDetection),
         )
         .add_event::<CollisionEvent>()
         .add_event::<PaddleCollisionEvent>();
@@ -45,7 +46,7 @@ fn update_rectanle(mut query: Query<(&mut RectangleCollider, &Transform)>) {
     }
 }
 
-// BUG Double collsiion
+//FIXME Double collsiion
 fn update_block_collsions(
     balls: Query<(Entity, &CircleCollider)>,
     rectangles: Query<(Entity, &RectangleCollider), Without<PaddleComponent>>,

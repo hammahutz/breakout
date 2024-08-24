@@ -2,11 +2,18 @@ use bevy::prelude::*;
 
 use crate::data::components::{AccelerationComponent, VelocityComponent};
 
+use super::GameLoop;
+
 pub struct MovementPlugin;
 
 impl Plugin for MovementPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (update_position, update_velocity));
+        app.add_systems(
+            Update,
+            (update_position, update_velocity)
+                .chain()
+                .in_set(GameLoop::UpdateEntities),
+        );
     }
 }
 

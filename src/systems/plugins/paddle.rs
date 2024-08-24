@@ -5,12 +5,14 @@ use crate::data::{
     resources::{MousePosition, SceneAssets},
 };
 
+use super::GameLoop;
+
 pub struct PaddlePlugin;
 
 impl Plugin for PaddlePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(PostStartup, spawn_paddle)
-            .add_systems(Update, move_paddle);
+            .add_systems(Update, move_paddle.in_set(GameLoop::UserInput));
     }
 }
 

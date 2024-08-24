@@ -8,12 +8,16 @@ use crate::data::{
     util::CollisionSide,
 };
 
+use super::GameLoop;
+
 pub struct BallPlugin;
 
 impl Plugin for BallPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(PostStartup, spawn_ball)
-            .add_systems(Update, (recive_collsison, recive_paddle_collsison));
+        app.add_systems(PostStartup, spawn_ball).add_systems(
+            Update,
+            (recive_collsison, recive_paddle_collsison).in_set(GameLoop::DamageControll),
+        );
     }
 }
 

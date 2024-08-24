@@ -9,6 +9,7 @@ pub mod input;
 pub mod level_loader;
 pub mod movement;
 pub mod paddle;
+pub mod schedule;
 
 pub use asset_loader::*;
 pub use ball::*;
@@ -21,3 +22,4 @@ pub use input::*;
 pub use level_loader::*;
 pub use movement::*;
 pub use paddle::*;
+pub use schedule::*;

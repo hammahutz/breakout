@@ -1,9 +1,10 @@
 use bevy::{app::AppExit, math::bounding::BoundingVolume, prelude::*};
 
 use crate::data::components::{
-        Ball, CircleCollider, HealthComponent, PaddleComponent, RectangleCollider,
-        VelocityComponent,
-    };
+    Ball, CircleCollider, HealthComponent, PaddleComponent, RectangleCollider, VelocityComponent,
+};
+
+use super::GameLoop;
 
 pub const IS_DEBUG: bool = true;
 
@@ -17,8 +18,10 @@ impl Plugin for DebugPlugin {
         app.add_systems(PostStartup, spawn_health_text)
             .add_systems(
                 Update,
-                (exit_game, draw_collider, draw_vector, update_health_display),
+                (draw_collider, draw_vector, update_health_display)
+                    .in_set(GameLoop::UpdateEntities),
             )
+            .add_systems(Update, exit_game)
             .init_gizmo_group::<DebugGizmos>();
     }
 }

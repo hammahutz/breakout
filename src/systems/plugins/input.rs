@@ -4,12 +4,14 @@ use bevy::window::PrimaryWindow;
 use crate::data::components::GameCamera;
 use crate::data::resources::MousePosition;
 
+use super::GameLoop;
+
 pub struct GameInput;
 
 impl Plugin for GameInput {
     fn build(&self, app: &mut App) {
         app.init_resource::<MousePosition>()
-            .add_systems(Update, cursor_position);
+            .add_systems(Update, cursor_position.in_set(GameLoop::UserInput));
     }
 }
 
